@@ -4,6 +4,7 @@ import com.sparta.spartaapi.dtos.TraineeDTO;
 import com.sparta.spartaapi.dtos.TraineeMapper;
 import com.sparta.spartaapi.entities.Trainee;
 import com.sparta.spartaapi.repositories.TraineeRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.stereotype.Service;
 
@@ -14,8 +15,9 @@ public class TraineeService {
     private final TraineeRepository traineeRepository;
     private final TraineeMapper traineeMapper;
 
+    @Autowired
     public TraineeService(TraineeRepository traineeRepository, TraineeMapper traineeMapper) {
-        if (traineeRepository == null) {
+        if (traineeRepository == null || traineeMapper == null) {
             throw new IllegalArgumentException("Repository cannot be null");
         }
         this.traineeRepository = traineeRepository;
