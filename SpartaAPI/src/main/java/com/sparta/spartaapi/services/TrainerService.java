@@ -63,4 +63,16 @@ public class TrainerService {
         }
         trainerRepository.deleteById(id);
     }
+
+    public List<TrainerDTO> searchByFirstName(String firstName) {
+        return trainerRepository.findByFirstNameContainingIgnoreCase(firstName).stream().map(trainerMapper::toDTO).toList();
+    }
+
+    public List<TrainerDTO> searchByLastName(String lastName) {
+        return trainerRepository.findByLastNameContainingIgnoreCase(lastName).stream().map(trainerMapper::toDTO).toList();
+    }
+
+    public List<TrainerDTO> searchBySpecialtyLang(String lang) {
+        return trainerRepository.findBySpecialtyLangContainingIgnoreCase(lang).stream().map(trainerMapper::toDTO).toList();
+    }
 }

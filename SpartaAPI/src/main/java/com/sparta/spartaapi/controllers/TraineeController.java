@@ -77,4 +77,31 @@ public class TraineeController {
         traineeService.deleteTrainee(id);
         return ResponseEntity.noContent().build();
     }
+
+    @Operation(summary = "Search trainees by first name", description = "Retrieve trainees whose first name contains the given value")
+    @GetMapping("/search/firstname")
+    public ResponseEntity<List<TraineeDTO>> searchByFirstName(@RequestParam String firstName) {
+        return ResponseEntity.ok(traineeService.searchByFirstName(firstName));
+    }
+
+    @Operation(summary = "Search trainees by last name", description = "Retrieve trainees whose last name contains the given value")
+    @GetMapping("/search/lastname")
+    public ResponseEntity<List<TraineeDTO>> searchByLastName(@RequestParam String lastName) {
+        return ResponseEntity.ok(traineeService.searchByLastName(lastName));
+    }
+
+    @Operation(summary = "Search trainees by specialty language", description = "Retrieve trainees by specialty programming language")
+    @GetMapping("/search/specialty")
+    public ResponseEntity<List<TraineeDTO>> searchBySpecialtyLang(@RequestParam String lang) {
+        return ResponseEntity.ok(traineeService.searchBySpecialtyLang(lang));
+    }
+
+    @Operation(summary = "Get trainees by course", description = "Retrieve all trainees enrolled in a specific course using the course ID")
+    @GetMapping("/course/{courseId}")
+    public ResponseEntity<List<TraineeDTO>> getTraineesByCourse(@PathVariable Integer courseId) {
+        return ResponseEntity.ok(traineeService.getTraineesByCourse(courseId));
+    }
 }
+
+
+
