@@ -49,10 +49,10 @@ public class TraineeService {
 
     public TraineeDTO enrolTraineeToCourse(Integer traineeId, Integer courseId) {
         Trainee trainee = traineeRepository.findById(traineeId)
-                .orElseThrow(() -> new ResourceNotFoundException("Trainee not found with id: " + traineeId));
+                .orElseThrow(() -> new IllegalArgumentException("Trainee not found with id: " + traineeId));
 
         Course course = courseRepository.findById(courseId)
-                .orElseThrow(() -> new ResourceNotFoundException("Course not found with id: " + courseId));
+                .orElseThrow(() -> new IllegalArgumentException("Course not found with id: " + courseId));
 
         trainee.setCourse(course);
 
@@ -77,16 +77,16 @@ public class TraineeService {
 
     public TrainerDTO getTrainerForTrainee(Integer traineeId) {
         Trainee trainee = traineeRepository.findById(traineeId)
-                .orElseThrow(() -> new ResourceNotFoundException("Trainee not found with id: " + traineeId));
+                .orElseThrow(() -> new IllegalArgumentException("Trainee not found with id: " + traineeId));
 
         if (trainee.getCourse() == null) {
-            throw new ResourceNotFoundException("Trainee is not enrolled in any course");
+            throw new IllegalArgumentException("Trainee is not enrolled in any course");
         }
 
         Trainer trainer = trainee.getCourse().getTrainer();
 
         if (trainer == null) {
-            throw new ResourceNotFoundException("Trainer cannot be found for this course");
+            throw new IllegalArgumentException("Trainer cannot be found for this course");
         }
 
         return trainerMapper.toDTO(trainer);
