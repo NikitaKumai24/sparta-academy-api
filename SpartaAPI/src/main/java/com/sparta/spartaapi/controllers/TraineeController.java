@@ -1,6 +1,7 @@
 package com.sparta.spartaapi.controllers;
 
 import com.sparta.spartaapi.dtos.TraineeDTO;
+import com.sparta.spartaapi.dtos.TrainerDTO;
 import com.sparta.spartaapi.services.TraineeService;
 import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.http.HttpStatus;
@@ -36,11 +37,27 @@ public class TraineeController {
         }
     }
 
+    @Operation(summary = "Enrol a trainee in a course", description = "A trainee can assign themselves to a specific course")
+    @PostMapping("/{traineeId}/courses/{courseId}/enrol")
+    public ResponseEntity<TraineeDTO> enrolToCourse(@PathVariable Integer traineeId,
+                                                    @PathVariable Integer courseId) {
+
+        TraineeDTO updatedTrainee = traineeService.enrolTraineeToCourse(traineeId, courseId);
+        return ResponseEntity.ok(updatedTrainee);
+    }
+
     @Operation(summary = "Add a trainee", description = "Add a new trainee to the database")
     @PostMapping
     public ResponseEntity<TraineeDTO> addTrainee(@RequestBody TraineeDTO trainee) {
         TraineeDTO createdTrainee = traineeService.createTrainee(trainee);
         return ResponseEntity.status(HttpStatus.CREATED).body(createdTrainee);
+    }
+
+    @Operation(summary = "Get trainer for a trainee", description = "Retrieve the trainer assigned to a trainee's course")
+    @GetMapping("/{traineeId}/trainer")
+    public ResponseEntity<TrainerDTO> getTrainerForTrainee(@PathVariable Integer traineeId) {
+        TrainerDTO trainer = traineeService.getTrainerForTrainee(traineeId);
+        return ResponseEntity.ok(trainer);
     }
 
     @Operation(summary = "Update a trainee", description = "Update the details of a trainee by using their unique ID ")
