@@ -2,7 +2,12 @@ package com.sparta.spartaapi.services;
 
 import com.sparta.spartaapi.dtos.TraineeDTO;
 import com.sparta.spartaapi.dtos.TraineeMapper;
+import com.sparta.spartaapi.dtos.TrainerDTO;
+import com.sparta.spartaapi.dtos.TrainerMapper;
+import com.sparta.spartaapi.entities.Course;
 import com.sparta.spartaapi.entities.Trainee;
+import com.sparta.spartaapi.entities.Trainer;
+import com.sparta.spartaapi.repositories.CourseRepository;
 import com.sparta.spartaapi.repositories.TraineeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.rest.webmvc.ResourceNotFoundException;
@@ -14,14 +19,19 @@ import java.util.List;
 public class TraineeService {
     private final TraineeRepository traineeRepository;
     private final TraineeMapper traineeMapper;
+    private final CourseRepository courseRepository;
+    private final TrainerMapper trainerMapper;
 
     @Autowired
-    public TraineeService(TraineeRepository traineeRepository, TraineeMapper traineeMapper) {
+    public TraineeService(TraineeRepository traineeRepository, TraineeMapper traineeMapper,
+                          CourseRepository courseRepository, TrainerMapper trainerMapper) {
         if (traineeRepository == null || traineeMapper == null) {
             throw new IllegalArgumentException("Repository cannot be null");
         }
         this.traineeRepository = traineeRepository;
         this.traineeMapper = traineeMapper;
+        this.courseRepository = courseRepository;
+        this.trainerMapper = trainerMapper;
     }
 
     public List<TraineeDTO> getAllTrainees() {
@@ -37,10 +47,40 @@ public class TraineeService {
                 .orElseThrow(() -> new ResourceNotFoundException("Trainee not found with id: " + id));
     }
 
+    public TraineeDTO enrolTraineeToCourse(Integer traineeId, Integer courseId) {
+        Trainee trainee = traineeRepository.findById(traineeId)
+                .orElseThrow(() -> new ResourceNotFoundException("Trainee not found with id: " + traineeId));
+
+        Course course = courseRepository.findById(courseId)
+                .orElseThrow(() -> new ResourceNotFoundException("Course not found with id: " + courseId));
+
+        trainee.setCourse(course);
+
+        Trainee updatedTrainee = traineeRepository.save(trainee);
+        return traineeMapper.toDto(updatedTrainee);
+    }
+
     public TraineeDTO createTrainee(TraineeDTO traineeDTO) {
         Trainee trainee = traineeMapper.toEntity(traineeDTO);
         Trainee savedTrainee = traineeRepository.save(trainee);
         return traineeMapper.toDto(savedTrainee);
+    }
+
+    public TrainerDTO getTrainerForTrainee(Integer traineeId) {
+        Trainee trainee = traineeRepository.findById(traineeId)
+                .orElseThrow(() -> new ResourceNotFoundException("Trainee not found with id: " + traineeId));
+
+        if (trainee.getCourse() == null) {
+            throw new ResourceNotFoundException("Trainee is not enrolled in any course");
+        }
+
+        Trainer trainer = trainee.getCourse().getTrainer();
+
+        if (trainer == null) {
+            throw new ResourceNotFoundException("Trainer cannot be found for this course");
+        }
+
+        return trainerMapper.toDTO(trainer);
     }
 
     public TraineeDTO updateTrainee(Integer id, TraineeDTO traineeDTO) {
@@ -61,4 +101,6 @@ public class TraineeService {
         }
         traineeRepository.deleteById(id);
     }
+
+
 }
