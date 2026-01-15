@@ -17,4 +17,5 @@ public interface CourseRepository extends JpaRepository<Course, Integer> {
 
     List<Course> findByStartDateAfter(LocalDate startDate);
 
+
 }

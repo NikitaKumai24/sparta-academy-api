@@ -17,4 +17,5 @@ public interface TraineeRepository extends JpaRepository<Trainee, Integer> {
     List<Trainee> findByCourse(String course);
 
 
+
 }

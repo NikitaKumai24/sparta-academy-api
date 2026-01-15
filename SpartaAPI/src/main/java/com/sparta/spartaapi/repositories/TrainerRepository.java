@@ -16,4 +16,5 @@ public interface TrainerRepository extends JpaRepository<Trainer, Integer> {
 
     List<Trainer> findBySpeciality(String speciality);
 
+
 }
