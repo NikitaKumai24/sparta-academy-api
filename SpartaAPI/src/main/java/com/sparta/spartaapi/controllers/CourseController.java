@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping
+@RequestMapping("/courses")
 public class CourseController {
     private final CourseService courseService;
 
@@ -21,11 +21,12 @@ public class CourseController {
     }
 
     // Get single course by ID
-    @GetMapping
-    public ResponseEntity<List<CourseDTO>> getAllCourses(){
-        List<CourseDTO> courses = courseService.getAllCourses();
-        return ResponseEntity.ok(courses);
+    @GetMapping("/{id}")
+    public ResponseEntity<CourseDTO> getCourseById(@PathVariable int id) {
+        CourseDTO course = courseService.getCourseById(id);
+        return ResponseEntity.ok(course);
     }
+
 
     // POST create new course
     @PostMapping
@@ -50,4 +51,12 @@ public class CourseController {
         }
         return ResponseEntity.notFound().build();
     }
+
+    // GET search courses by title (custom repository method)
+    @GetMapping("/search")
+    public ResponseEntity<List<CourseDTO>> searchCourses(@RequestParam String title) {
+        List<CourseDTO> results = courseService.searchCoursesByTitle(title);
+        return ResponseEntity.ok(results);
+    }
+
 }

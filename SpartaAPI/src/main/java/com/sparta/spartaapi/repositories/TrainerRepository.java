@@ -10,11 +10,12 @@ import java.util.Optional;
 @Repository
 public interface TrainerRepository extends JpaRepository<Trainer, Integer> {
 
-    Optional<Trainer> findByName(String name);
+    Optional<Trainer> findByEmail(String email);
 
-    List<Trainer> findByNameContainingIgnoreCase(String name);
+    List<Trainer> findByFirstNameContainingIgnoreCase(String firstName);
 
-    List<Trainer> findBySpeciality(String speciality);
+    List<Trainer> findByLastNameContainingIgnoreCase(String lastName);
 
-
+    List<Trainer> findBySpecialtyLangContainingIgnoreCase(String specialtyLang);
 }
+

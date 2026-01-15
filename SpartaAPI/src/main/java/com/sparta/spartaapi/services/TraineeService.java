@@ -10,10 +10,10 @@ import com.sparta.spartaapi.entities.Trainer;
 import com.sparta.spartaapi.repositories.CourseRepository;
 import com.sparta.spartaapi.repositories.TraineeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 
 @Service
 public class TraineeService {
@@ -44,7 +44,7 @@ public class TraineeService {
     public TraineeDTO getTraineeById(Integer id) {
         return traineeRepository.findById(id)
                 .map(traineeMapper::toDto)
-                .orElseThrow(() -> new ResourceNotFoundException("Trainee not found with id: " + id));
+                .orElseThrow(() -> new NoSuchElementException("Trainee not found with id: " + id));
     }
 
     public TraineeDTO enrolTraineeToCourse(Integer traineeId, Integer courseId) {
@@ -62,6 +62,15 @@ public class TraineeService {
 
     public TraineeDTO createTrainee(TraineeDTO traineeDTO) {
         Trainee trainee = traineeMapper.toEntity(traineeDTO);
+
+        // Link trainee to course if courseId is provided
+        if (traineeDTO.getCourseId() != null) {
+            Course course = courseRepository.findById(traineeDTO.getCourseId())
+                    .orElseThrow(() -> new NoSuchElementException(
+                            "Course not found with id: " + traineeDTO.getCourseId()));
+            trainee.setCourse(course);
+        }
+
         Trainee savedTrainee = traineeRepository.save(trainee);
         return traineeMapper.toDto(savedTrainee);
     }
@@ -85,11 +94,19 @@ public class TraineeService {
 
     public TraineeDTO updateTrainee(Integer id, TraineeDTO traineeDTO) {
         if (!traineeRepository.existsById(id)) {
-            throw new ResourceNotFoundException("Trainee not found with id: " + id);
+            throw new NoSuchElementException("Trainee not found with id: " + id);
         }
 
         Trainee trainee = traineeMapper.toEntity(traineeDTO);
         trainee.setTraineeID(id);
+
+        // Link trainee to course if courseId is provided
+        if (traineeDTO.getCourseId() != null) {
+            Course course = courseRepository.findById(traineeDTO.getCourseId())
+                    .orElseThrow(() -> new NoSuchElementException(
+                            "Course not found with id: " + traineeDTO.getCourseId()));
+            trainee.setCourse(course);
+        }
 
         Trainee updatedTrainee = traineeRepository.save(trainee);
         return traineeMapper.toDto(updatedTrainee);
@@ -97,7 +114,7 @@ public class TraineeService {
 
     public void deleteTrainee(Integer id) {
         if (!traineeRepository.existsById(id)) {
-            throw new ResourceNotFoundException("Trainee not found with id: " + id);
+            throw new NoSuchElementException("Trainee not found with id: " + id);
         }
         traineeRepository.deleteById(id);
     }
