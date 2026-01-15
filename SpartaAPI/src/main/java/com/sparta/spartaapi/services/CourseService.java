@@ -44,24 +44,24 @@ public class CourseService {
         Course course = convertToEntity(courseDTO);
         Course savedCourse = this.courseRepository.save(course);
         return convertToDTO(savedCourse);
+
     }
 
 
     //update course
     public CourseDTO updateCourse(int id, CourseDTO courseDTO){
-        Optional<Course> existingCourse = this.courseRepository.findById(id);
+        Course courseToUpdate = this.courseRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Course not found with id: " + id));
 
-        if(existingCourse.isEmpty()){
-            return null;
-        }
-
-
-        Course courseToUpdate = existingCourse.get();
         courseToUpdate.setTitle(courseDTO.getTitle());
+        courseToUpdate.setDescription(courseDTO.getDescription());
+        courseToUpdate.setStartDate(courseDTO.getStartDate());
+        courseToUpdate.setEndDate(courseDTO.getEndDate());
 
         Course updatedCourse = this.courseRepository.save(courseToUpdate);
         return convertToDTO(updatedCourse);
     }
+
 
     //delete course
     public boolean deleteCourse(int id){
@@ -107,9 +107,6 @@ public class CourseService {
         course.setEndDate(courseDTO.getEndDate());
         return course;
     }
-
-
-
 
 
 

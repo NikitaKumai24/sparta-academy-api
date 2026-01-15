@@ -10,6 +10,7 @@ import java.util.List;
 @Table(name = "courses")
 public class Course {
 
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "course_id")
@@ -46,6 +47,10 @@ public class Course {
 
     public Integer getCourseId() {
         return courseId;
+    }
+
+    public void setCourseId(Integer courseId) {
+        this.courseId = courseId;
     }
 
     public String getTitle() {

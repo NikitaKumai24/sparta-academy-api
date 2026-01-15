@@ -1,5 +1,6 @@
 package com.sparta.spartaapi.repositories;
 
+
 import com.sparta.spartaapi.entities.Trainer;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
