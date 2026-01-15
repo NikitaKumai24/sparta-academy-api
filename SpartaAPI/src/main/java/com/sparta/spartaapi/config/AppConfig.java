@@ -56,7 +56,7 @@ public class AppConfig {
                 var trainee1 = new Trainee(null, "Nikki", "Kumai", "nikki@sparta.com", "07000000011", "Java");
                 trainee1.setCourse(course1);
 
-                var trainee2 = new Trainee(null, "Adil", "Hussain", "aadil@sparta.com", "07000000012", "C#");
+                var trainee2 = new Trainee(null, "Adil", "Hussain", "adil@sparta.com", "07000000012", "C#");
                 trainee2.setCourse(course2);
 
                 traineeRepository.save(trainee1);
