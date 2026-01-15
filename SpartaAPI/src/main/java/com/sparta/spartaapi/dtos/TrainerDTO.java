@@ -28,7 +28,7 @@ public class TrainerDTO {
         this.favAnimal = favAnimal;
     }
 
-    public Integer TrainerId() {
+    public Integer getTrainerId() {
         return trainerId;
     }
 
@@ -85,4 +85,3 @@ public class TrainerDTO {
     }
 
 }
-
