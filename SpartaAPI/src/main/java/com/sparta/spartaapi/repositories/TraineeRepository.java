@@ -10,12 +10,13 @@ import java.util.Optional;
 @Repository
 public interface TraineeRepository extends JpaRepository<Trainee, Integer> {
 
-    Optional<Trainee> findByName(String name);
+    Optional<Trainee> findByEmail(String email);
 
-    List<Trainee> findByNameContainingIgnoreCase(String name);
+    List<Trainee> findByFirstNameContainingIgnoreCase(String firstName);
 
-    List<Trainee> findByCourse(String course);
+    List<Trainee> findByLastNameContainingIgnoreCase(String lastName);
 
+    List<Trainee> findBySpecialtyLangContainingIgnoreCase(String specialtyLang);
 
-
+    List<Trainee> findByCourse_CourseId(Integer courseId);
 }

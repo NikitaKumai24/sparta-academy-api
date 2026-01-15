@@ -72,6 +72,15 @@ public class CourseService {
         return false;
     }
 
+    //search by title
+    public List<CourseDTO> searchCoursesByTitle(String title) {
+        return courseRepository.findByTitleContainingIgnoreCase(title)
+                .stream()
+                .map(this::convertToDTO)
+                .toList();
+    }
+
+
     //Mapper methods
 
     private CourseDTO convertToDTO(Course course){
@@ -81,8 +90,14 @@ public class CourseService {
         courseDTO.setDescription(course.getDescription());
         courseDTO.setStartDate(course.getStartDate());
         courseDTO.setEndDate(course.getEndDate());
+
+        if (course.getTrainer() != null) {
+            courseDTO.setTrainerId(course.getTrainer().getTrainerID());
+        }
+
         return courseDTO;
     }
+
 
     private Course convertToEntity(CourseDTO courseDTO){
         Course course = new Course();
