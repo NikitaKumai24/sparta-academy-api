@@ -39,8 +39,8 @@ public class AppConfig {
             if (trainerRepository.count() == 0) {
 
                 // Trainers
-                var trainer1 = new Trainer(1, "Nish", "Mandal", "nish.mandal@sparta.com", "07000000001", "Java", "Tiger");
-                var trainer2 = new Trainer(2, "Cathy", "French", "cathy.french@sparta.com", "07000000002", "C#", "Panda");
+                var trainer1 = new Trainer(null, "Nish", "Mandal", "nish.mandal@sparta.com", "07000000001", "Java", "Tiger");
+                var trainer2 = new Trainer( null, "Cathy", "French", "cathy.french@sparta.com", "07000000002", "C#", "Panda");
 
                 trainerRepository.save(trainer1);
                 trainerRepository.save(trainer2);
@@ -53,10 +53,10 @@ public class AppConfig {
                 courseRepository.save(course2);
 
                 // Trainees
-                var trainee1 = new Trainee(1, "Nikki", "Kumai", "nikki@sparta.com", "07000000011", "Java");
+                var trainee1 = new Trainee(null, "Nikki", "Kumai", "nikki@sparta.com", "07000000011", "Java");
                 trainee1.setCourse(course1);
 
-                var trainee2 = new Trainee(2, "Adil", "Hussain", "adil@sparta.com", "07000000012", "C#");
+                var trainee2 = new Trainee(null, "Adil", "Hussain", "adil@sparta.com", "07000000012", "C#");
                 trainee2.setCourse(course2);
 
                 traineeRepository.save(trainee1);
