@@ -6,8 +6,9 @@ import com.sparta.spartaapi.repositories.CourseRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
-import java.util.Optional;
+import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 
 @Service
@@ -23,7 +24,7 @@ public class CourseService {
     //CRUD Operations
 
     //Get all courses
-    public List<CourseDTO> getAllCourses(){
+    public List<CourseDTO> getAllCourses() {
         List<Course> courses = this.courseRepository.findAll();
         return courses.stream()
                 .map(this::convertToDTO)
@@ -31,16 +32,15 @@ public class CourseService {
     }
 
     //Get a single course id
-    public CourseDTO getCourseById(int id){
+    public CourseDTO getCourseById(int id) {
         Course course = this.courseRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Course not found with id: " + id));
         return convertToDTO(course);
     }
 
 
-
     //create course
-    public CourseDTO createCourse(CourseDTO courseDTO){
+    public CourseDTO createCourse(CourseDTO courseDTO) {
         Course course = convertToEntity(courseDTO);
         Course savedCourse = this.courseRepository.save(course);
         return convertToDTO(savedCourse);
@@ -49,7 +49,7 @@ public class CourseService {
 
 
     //update course
-    public CourseDTO updateCourse(int id, CourseDTO courseDTO){
+    public CourseDTO updateCourse(int id, CourseDTO courseDTO) {
         Course courseToUpdate = this.courseRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Course not found with id: " + id));
 
@@ -64,8 +64,8 @@ public class CourseService {
 
 
     //delete course
-    public boolean deleteCourse(int id){
-        if(this.courseRepository.existsById(id)){
+    public boolean deleteCourse(int id) {
+        if (this.courseRepository.existsById(id)) {
             this.courseRepository.deleteById(id);
             return true;
         }
@@ -83,7 +83,7 @@ public class CourseService {
 
     //Mapper methods
 
-    private CourseDTO convertToDTO(Course course){
+    private CourseDTO convertToDTO(Course course) {
         CourseDTO courseDTO = new CourseDTO();
         courseDTO.setCourseId(course.getCourseId());
         courseDTO.setTitle(course.getTitle());
@@ -99,7 +99,7 @@ public class CourseService {
     }
 
 
-    private Course convertToEntity(CourseDTO courseDTO){
+    private Course convertToEntity(CourseDTO courseDTO) {
         Course course = new Course();
         course.setTitle(courseDTO.getTitle());
         course.setDescription(courseDTO.getDescription());
@@ -108,6 +108,12 @@ public class CourseService {
         return course;
     }
 
+    public CourseDTO getCourseByExactTitle(String title) {
+        Course course = courseRepository.findByTitle(title).orElseThrow(() -> new NoSuchElementException("Course not found with title: " + title));
+        return convertToDTO(course);
+    }
 
-
+    public List<CourseDTO> getCoursesStartingAfter(LocalDate date) {
+        return courseRepository.findByStartDateAfter(date).stream().map(this::convertToDTO).toList();
+    }
 }

@@ -119,5 +119,19 @@ public class TraineeService {
         traineeRepository.deleteById(id);
     }
 
+    public List<TraineeDTO> searchByFirstName(String firstName) {
+        return traineeRepository.findByFirstNameContainingIgnoreCase(firstName).stream().map(traineeMapper::toDto).toList();
+    }
 
+    public List<TraineeDTO> searchByLastName(String lastName) {
+        return traineeRepository.findByLastNameContainingIgnoreCase(lastName).stream().map(traineeMapper::toDto).toList();
+    }
+
+    public List<TraineeDTO> searchBySpecialtyLang(String lang) {
+        return traineeRepository.findBySpecialtyLangContainingIgnoreCase(lang).stream().map(traineeMapper::toDto).toList();
+    }
+
+    public List<TraineeDTO> getTraineesByCourse(Integer courseId) {
+        return traineeRepository.findByCourse_CourseId(courseId).stream().map(traineeMapper::toDto).toList();
+    }
 }
