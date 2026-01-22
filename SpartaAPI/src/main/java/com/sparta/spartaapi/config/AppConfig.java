@@ -3,15 +3,18 @@ package com.sparta.spartaapi.config;
 import com.sparta.spartaapi.entities.Course;
 import com.sparta.spartaapi.entities.Trainee;
 import com.sparta.spartaapi.entities.Trainer;
+import com.sparta.spartaapi.entities.User;
 import com.sparta.spartaapi.repositories.CourseRepository;
 import com.sparta.spartaapi.repositories.TraineeRepository;
 import com.sparta.spartaapi.repositories.TrainerRepository;
+import com.sparta.spartaapi.repositories.UserRepository;
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Info;
 import jakarta.transaction.Transactional;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.time.LocalDate;
 
@@ -31,7 +34,9 @@ public class AppConfig {
     @Transactional
     public CommandLineRunner loadData(TrainerRepository trainerRepository,
                                       CourseRepository courseRepository,
-                                      TraineeRepository traineeRepository) {
+                                      TraineeRepository traineeRepository,
+                                      UserRepository userRepository,
+                                      PasswordEncoder passwordEncoder) {
 
         return args -> {
             System.out.println("DataLoader running...");
@@ -62,7 +67,16 @@ public class AppConfig {
                 traineeRepository.save(trainee1);
                 traineeRepository.save(trainee2);
 
-                System.out.println("Seed data added");
+                // Add test users
+                var user1 = new User("admin", passwordEncoder.encode("password123"), "ROLE_ADMIN");
+                var user2 = new User("trainer", passwordEncoder.encode("password123"), "ROLE_TRAINER");
+                var user3 = new User("trainee", passwordEncoder.encode("password123"), "ROLE_TRAINEE");
+
+                userRepository.save(user1);
+                userRepository.save(user2);
+                userRepository.save(user3);
+
+                System.out.println("Seed data added (including users)");
             } else {
                 System.out.println("Seed skipped");
             }
