@@ -69,7 +69,7 @@ These pages display data rendered using Thymeleaf templates.
 
 Most web pages require login. If you are not authenticated, you will be redirected to the default Spring Security login page:
 
-http://localhost:8080/login
+http://localhost:8091/login
 
 Seeded demo credentials:
 - admin / password123
