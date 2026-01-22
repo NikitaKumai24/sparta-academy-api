@@ -6,13 +6,14 @@ import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
 import java.util.List;
 
 @RestController
-@RequestMapping("/courses")
+@RequestMapping("/api/courses")
 public class CourseController {
     private final CourseService courseService;
 
@@ -78,4 +79,5 @@ public class CourseController {
         return ResponseEntity.ok(
                 courseService.getCoursesStartingAfter(LocalDate.parse(date)));
     }
+
 }
