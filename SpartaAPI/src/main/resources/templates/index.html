@@ -1,11 +1,111 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
   <meta charset="UTF-8">
-  <title>Home Page</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sparta Web API</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
-<body>
+<body class="bg-light">
 <div th:replace="~{fragments/header :: navbar}"></div>
-<h1>Hello World</h1>
+
+<div class="container mt-5">
+  <div class="text-center mb-5">
+    <h1 class="display-4">Sparta Web API</h1>
+    <p class="lead text-muted">Training Management System</p>
+    <h2 sec:authorize="hasRole('ADMIN')">Welcome, Admin</h2>
+    <h2 sec:authorize="hasRole('TRAINER')">Welcome, Trainer</h2>
+    <h2 sec:authorize="hasRole('TRAINEE')">Welcome, Trainee</h2>
+  </div>
+
+  <div class="row g-4" sec:authorize="hasRole('ADMIN')">
+    <!-- Trainees Card -->
+    <div class="col-md-4">
+      <div class="card h-100 shadow-sm">
+        <div class="card-body text-center">
+          <h3 class="card-title">Trainees</h3>
+          <p class="card-text">Manage trainee information and enrollments</p>
+          <a href="/trainees" class="btn btn-primary">View Trainees</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Trainers Card -->
+    <div class="col-md-4">
+      <div class="card h-100 shadow-sm">
+        <div class="card-body text-center">
+          <h3 class="card-title">Trainers</h3>
+          <p class="card-text">Manage trainer profiles and assignments</p>
+          <a href="/trainers" class="btn btn-primary">View Trainers</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Courses Card -->
+    <div class="col-md-4">
+      <div class="card h-100 shadow-sm">
+        <div class="card-body text-center">
+          <h3 class="card-title">Courses</h3>
+          <p class="card-text">Manage course schedules and details</p>
+          <a href="/courses" class="btn btn-primary">View Courses</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div sec:authorize="hasRole('TRAINER')">
+    <div class="row g-4">
+
+      <div class="col-md-6">
+        <div class="card h-100 shadow-sm">
+          <div class="card-body text-center">
+            <h3 class="card-title">Courses</h3>
+            <p class="card-text">View and manage courses</p>
+            <a href="/courses" class="btn btn-primary">View Courses</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-6">
+        <div class="card h-100 shadow-sm">
+          <div class="card-body text-center">
+            <h3 class="card-title">Trainees</h3>
+            <p class="card-text">View trainees currently enrolled in courses</p>
+            <a href="/trainees" class="btn btn-primary">View Trainees</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div sec:authorize="hasRole('TRAINEE')">
+    <div class="row g-4">
+
+      <div class="col-md-6">
+        <div class="card h-100 shadow-sm">
+          <div class="card-body text-center">
+            <h3 class="card-title">Courses</h3>
+            <p class="card-text">View available courses</p>
+            <a href="/courses" class="btn btn-primary">View Courses</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-6">
+        <div class="card h-100 shadow-sm">
+          <div class="card-body text-center">
+            <h3 class="card-title">Trainers</h3>
+            <p class="card-text">View the current training staff</p>
+            <a href="/trainers" class="btn btn-primary">View Trainers</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+</div>
+
 </body>
 </html>
