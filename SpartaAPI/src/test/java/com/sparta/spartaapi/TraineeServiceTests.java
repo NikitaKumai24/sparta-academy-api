@@ -23,7 +23,9 @@ public class TraineeServiceTests {
     private final TraineeMapper mockMapper = Mockito.mock(TraineeMapper.class);
     private final CourseRepository mockCourseRepository = Mockito.mock(CourseRepository.class);
     private final TrainerMapper mockTrainerMapper = Mockito.mock(TrainerMapper.class);
-    private final TraineeService sut = new TraineeService(mockRepository, mockMapper, mockCourseRepository, mockTrainerMapper);
+
+    private final TraineeService sut =
+            new TraineeService(mockRepository, mockMapper, mockCourseRepository, mockTrainerMapper);
 
     @Test
     @DisplayName("Get all Trainees")
@@ -47,7 +49,9 @@ public class TraineeServiceTests {
         Mockito.when(mockRepository.findAll()).thenReturn(trainees);
         Mockito.when(mockMapper.toDto(trainee1)).thenReturn(dto1);
         Mockito.when(mockMapper.toDto(trainee2)).thenReturn(dto2);
+
         List<TraineeDTO> result = sut.getAllTrainees();
+
         Assertions.assertEquals(2, result.size());
         Assertions.assertEquals(1, result.get(0).getTraineeId());
         Assertions.assertEquals(2, result.get(1).getTraineeId());
@@ -64,7 +68,9 @@ public class TraineeServiceTests {
 
         Mockito.when(mockRepository.findById(1)).thenReturn(Optional.of(trainee));
         Mockito.when(mockMapper.toDto(trainee)).thenReturn(dto);
+
         TraineeDTO result = sut.getTraineeById(1);
+
         Assertions.assertNotNull(result);
         Assertions.assertEquals(1, result.getTraineeId());
     }
@@ -92,47 +98,64 @@ public class TraineeServiceTests {
         Mockito.when(mockMapper.toEntity(dto)).thenReturn(entity);
         Mockito.when(mockRepository.save(entity)).thenReturn(entity);
         Mockito.when(mockMapper.toDto(entity)).thenReturn(dto);
+
         TraineeDTO result = sut.createTrainee(dto);
+
         Assertions.assertNotNull(result);
         Assertions.assertEquals(1, result.getTraineeId());
         Mockito.verify(mockRepository).save(entity);
     }
 
     @Test
-    @DisplayName("Update Trainee ")
+    @DisplayName("Update Trainee - Happy Path")
     void updateTraineeTest() {
         TraineeDTO dto = new TraineeDTO();
         dto.setTraineeId(1);
+        dto.setFirstName("Nikki");
+        dto.setLastName("Kumai");
+        dto.setEmail("nikki@sparta.com");
+        dto.setPhoneNumber("07000000011");
+        dto.setSpecialityLang("Java");
+        dto.setCourseId(null); // keep null so service won't call courseRepository
 
-        Trainee entity = new Trainee();
-        entity.setTraineeID(1);
+        Trainee existing = new Trainee();
+        existing.setTraineeID(1);
 
-        Mockito.when(mockRepository.existsById(1)).thenReturn(true);
-        Mockito.when(mockMapper.toEntity(dto)).thenReturn(entity);
-        Mockito.when(mockRepository.save(Mockito.any(Trainee.class))).thenReturn(entity);
-        Mockito.when(mockMapper.toDto(entity)).thenReturn(dto);
+        Mockito.when(mockRepository.findById(1)).thenReturn(Optional.of(existing));
+        Mockito.when(mockRepository.save(Mockito.any(Trainee.class))).thenReturn(existing);
+        Mockito.when(mockMapper.toDto(existing)).thenReturn(dto);
+
         TraineeDTO result = sut.updateTrainee(1, dto);
+
         Assertions.assertEquals(1, result.getTraineeId());
+        Mockito.verify(mockRepository).findById(1);
+        Mockito.verify(mockRepository).save(existing);
     }
 
     @Test
-    @DisplayName("Update Trainee - Sad Path")
+    @DisplayName("Update Trainee - Sad Path (not found)")
     void updateTraineeNotFound() {
         TraineeDTO dto = new TraineeDTO();
         dto.setTraineeId(100);
-        Mockito.when(mockRepository.existsById(100)).thenReturn(false);
+
+        Mockito.when(mockRepository.findById(100)).thenReturn(Optional.empty());
+
         Assertions.assertThrows(
                 NoSuchElementException.class,
                 () -> sut.updateTrainee(100, dto)
         );
+
+        Mockito.verify(mockRepository).findById(100);
+        Mockito.verify(mockRepository, Mockito.never()).save(Mockito.any());
     }
 
     @Test
     @DisplayName("Delete Trainee")
     void deleteTraineeTest() {
         Mockito.when(mockRepository.existsById(1)).thenReturn(true);
+
         sut.deleteTrainee(1);
+
         Mockito.verify(mockRepository).deleteById(1);
     }
-
 }
