@@ -1,7 +1,6 @@
-package com.sparta.spartaapi.config;
+package com.sparta.spartaapi.security;
 
 import com.sparta.spartaapi.services.CustomUserDetailsService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationProvider;
@@ -16,8 +15,11 @@ import org.springframework.security.web.SecurityFilterChain;
 @EnableWebSecurity
 public class WebSecurityConfig {
 
-    @Autowired
-    private CustomUserDetailsService userDetailsService;
+    private final CustomUserDetailsService userDetailsService;
+
+    public WebSecurityConfig(CustomUserDetailsService userDetailsService) {
+        this.userDetailsService = userDetailsService;
+    }
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -27,10 +29,7 @@ public class WebSecurityConfig {
                         .requestMatchers("/", "/courses", "/trainers", "/trainees").authenticated()
                         .anyRequest().authenticated()
                 )
-                .formLogin(form -> form
-                        //.loginPage("/login")
-                        .permitAll()
-                )
+                .formLogin(form -> form.permitAll())
                 .logout(logout -> logout.permitAll());
 
         return http.build();
@@ -43,7 +42,8 @@ public class WebSecurityConfig {
 
     @Bean
     public AuthenticationProvider authenticationProvider() {
-        DaoAuthenticationProvider provider = new DaoAuthenticationProvider(userDetailsService);
+        DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
+        provider.setUserDetailsService(userDetailsService);
         provider.setPasswordEncoder(passwordEncoder());
         return provider;
     }
