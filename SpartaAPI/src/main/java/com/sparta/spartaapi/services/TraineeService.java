@@ -92,24 +92,24 @@ public class TraineeService {
         return trainerMapper.toDTO(trainer);
     }
 
-    public TraineeDTO updateTrainee(Integer id, TraineeDTO traineeDTO) {
-        if (!traineeRepository.existsById(id)) {
-            throw new NoSuchElementException("Trainee not found with id: " + id);
-        }
+    public TraineeDTO updateTrainee(Integer id, TraineeDTO dto) {
 
-        Trainee trainee = traineeMapper.toEntity(traineeDTO);
-        trainee.setTraineeID(id);
+        Trainee trainee = traineeRepository.findById(id)
+                .orElseThrow(() -> new NoSuchElementException("Trainee not found"));
 
-        // Link trainee to course if courseId is provided
-        if (traineeDTO.getCourseId() != null) {
-            Course course = courseRepository.findById(traineeDTO.getCourseId())
-                    .orElseThrow(() -> new NoSuchElementException(
-                            "Course not found with id: " + traineeDTO.getCourseId()));
+        trainee.setFirstName(dto.getFirstName());
+        trainee.setLastName(dto.getLastName());
+        trainee.setEmail(dto.getEmail());
+        trainee.setPhoneNumber(dto.getPhoneNumber());
+        trainee.setSpecialtyLang(dto.getSpecialityLang());
+
+        if (dto.getCourseId() != null) {
+            Course course = courseRepository.findById(dto.getCourseId())
+                    .orElseThrow(() -> new NoSuchElementException("Course not found"));
             trainee.setCourse(course);
         }
 
-        Trainee updatedTrainee = traineeRepository.save(trainee);
-        return traineeMapper.toDto(updatedTrainee);
+        return traineeMapper.toDto(traineeRepository.save(trainee));
     }
 
     public void deleteTrainee(Integer id) {

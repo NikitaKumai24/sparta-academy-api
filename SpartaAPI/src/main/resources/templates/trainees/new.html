@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Trainee</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="bg-light">
+
+<div class="container mt-5">
+    <h1 class="text-center">Create New Trainee</h1>
+
+    <form th:action="@{/trainees/new}"
+          th:object="${trainee}"
+          method="post"
+          class="mt-4">
+
+        <!-- First Name -->
+        <div class="mb-3">
+            <label class="form-label">First Name</label>
+            <input type="text"
+                   class="form-control"
+                   th:field="*{firstName}"
+                   required>
+        </div>
+
+        <!-- Last Name -->
+        <div class="mb-3">
+            <label class="form-label">Last Name</label>
+            <input type="text"
+                   class="form-control"
+                   th:field="*{lastName}"
+                   required>
+        </div>
+
+        <!-- Email -->
+        <div class="mb-3">
+            <label class="form-label">Email</label>
+            <input type="email"
+                   class="form-control"
+                   th:field="*{email}"
+                   required>
+        </div>
+
+        <!-- Phone Number -->
+        <div class="mb-3">
+            <label class="form-label">Phone Number</label>
+            <input type="text"
+                   class="form-control"
+                   th:field="*{phoneNumber}">
+        </div>
+
+        <!-- Speciality Language -->
+        <div class="mb-3">
+            <label class="form-label">Speciality Language</label>
+            <input type="text"
+                   class="form-control"
+                   th:field="*{specialityLang}">
+        </div>
+
+        <!-- Course -->
+        <div class="mb-3">
+            <label class="form-label">Course</label>
+            <select class="form-select"
+                    th:field="*{courseId}"
+                    required>
+                <option value="">-- Select a course --</option>
+                <option th:each="course : ${courses}"
+                        th:value="${course.courseId}"
+                        th:text="${course.title}">
+                </option>
+            </select>
+        </div>
+
+
+        <!-- Buttons -->
+        <div class="text-center">
+            <button type="submit" class="btn btn-primary me-2">
+                Create
+            </button>
+
+            <a th:href="@{/trainees}" class="btn btn-secondary">
+                Cancel
+            </a>
+        </div>
+    </form>
+
+</div>
+
+</body>
+</html>
