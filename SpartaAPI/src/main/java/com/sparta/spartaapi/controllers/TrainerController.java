@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.NoSuchElementException;
 
 @RestController
-@RequestMapping("/trainers")
+@RequestMapping("/api/trainers")
 public class TrainerController {
 
     private final TrainerService trainerService;
