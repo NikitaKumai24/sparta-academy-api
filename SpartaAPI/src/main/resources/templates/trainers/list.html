@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>Trainers</title>
+</head>
+<body>
+<h1>Trainers</h1>
+<a th:href="@{/api/trainers/new}">Create Trainer</a>
+<table border="1">
+  <thead>
+  <tr>
+    <th>ID</th>
+    <th>First Name</th>
+    <th>Last Name</th>
+    <th>Specialty</th>
+    <th>Actions</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr th:each="trainer : ${trainers}">
+    <td th:text="${trainer.trainerId}"></td>
+    <td th:text="${trainer.firstName}"></td>
+    <td th:text="${trainer.lastName}"></td>
+    <td th:text="${trainer.specialtyLang}"></td>
+    <td>
+      <a th:href="@{/api/trainers/{id}(id=${trainer.trainerId})}">View</a>
+      <form th:action="@{/api/trainers/{id}/delete(id=${trainer.trainerId})}"
+            method="post" style="display:inline">
+        <button type="submit">Delete</button>
+      </form>
+    </td>
+  </tr>
+  </tbody>
+</table>
+</body>
+</html>
