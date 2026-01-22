@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Course</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+
+<body class="bg-light">
+<div th:replace="~{fragments/header :: navbar}"></div>
+
+<div class="container mt-5">
+    <h1 class="text-center">Edit Course</h1>
+
+    <!-- Main Edit Form -->
+    <form th:action="@{/courses/{id}/update(id=${course.courseId})}"
+          th:object="${course}"
+          method="post"
+          class="mt-4">
+
+        <!-- ID (read-only) -->
+        <div class="mb-3">
+            <label class="form-label">ID</label>
+            <input type="text"
+                   class="form-control-plaintext text-muted"
+                   th:value="*{courseId}"
+                   readonly>
+        </div>
+
+        <!-- Title -->
+        <div class="mb-3">
+            <label class="form-label">Title</label>
+            <input type="text"
+                   class="form-control"
+                   th:field="*{title}"
+                   required>
+        </div>
+
+        <!-- Description -->
+        <div class="mb-3">
+            <label class="form-label">Description</label>
+            <textarea class="form-control"
+                      th:field="*{description}"
+                      rows="3"></textarea>
+        </div>
+
+        <!-- Start Date -->
+        <div class="mb-3">
+            <label class="form-label">Start Date</label>
+            <input type="date"
+                   class="form-control"
+                   th:field="*{startDate}"
+                   required>
+        </div>
+
+        <!-- End Date -->
+        <div class="mb-3">
+            <label class="form-label">End Date</label>
+            <input type="date"
+                   class="form-control"
+                   th:field="*{endDate}"
+                   required>
+        </div>
+
+        <!-- Trainer -->
+        <div class="mb-3">
+            <label class="form-label">Trainer</label>
+            <select class="form-select" th:field="*{trainerId}" required>
+                <option value="" disabled>Select trainer</option>
+                <option th:each="t : ${trainers}"
+                        th:value="${t.trainerId}"
+                        th:text="|${t.firstName} ${t.lastName}|">
+                </option>
+            </select>
+        </div>
+
+        <!-- Buttons -->
+        <div class="text-center">
+            <button type="submit" class="btn btn-primary me-2">
+                Save
+            </button>
+
+            <a th:href="@{/courses}" class="btn btn-secondary me-2">
+                Cancel
+            </a>
+        </div>
+    </form>
+
+    <!-- Delete Form -->
+    <div class="text-center mt-3">
+        <form th:action="@{/courses/{id}(id=${course.courseId})}"
+              method="post"
+              onsubmit="return confirm('Are you sure you want to delete this course?')">
+            <button type="submit" class="btn btn-danger">
+                Delete
+            </button>
+        </form>
+    </div>
+
+</div>
+
+</body>
+</html>

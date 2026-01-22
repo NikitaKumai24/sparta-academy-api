@@ -1,7 +1,9 @@
 package com.sparta.spartaapi.webcontrollers;
 
 import com.sparta.spartaapi.dtos.CourseDTO;
+import com.sparta.spartaapi.dtos.TrainerDTO;
 import com.sparta.spartaapi.services.CourseService;
+import com.sparta.spartaapi.services.TrainerService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -25,6 +27,9 @@ class CourseWebControllerTest {
     @MockBean
     private CourseService courseService;
 
+    @MockBean
+    private TrainerService trainerService;
+
     @Test
     void shouldReturnCoursesIndexPage() throws Exception {
         CourseDTO course = new CourseDTO();
@@ -46,18 +51,23 @@ class CourseWebControllerTest {
         course.setTitle("Java Bootcamp");
 
         when(courseService.getCourseById(1)).thenReturn(course);
+        when(trainerService.getAllTrainers()).thenReturn(List.of()); // controller adds trainers
 
         mockMvc.perform(get("/courses/1"))
                 .andExpect(status().isOk())
                 .andExpect(view().name("courses/view"))
-                .andExpect(model().attributeExists("course"));
+                .andExpect(model().attributeExists("course"))
+                .andExpect(model().attributeExists("trainers"));
     }
 
     @Test
     void shouldReturnNewCoursePage() throws Exception {
+        when(trainerService.getAllTrainers()).thenReturn(List.of()); // controller adds trainers
+
         mockMvc.perform(get("/courses/new"))
                 .andExpect(status().isOk())
                 .andExpect(view().name("courses/new"))
-                .andExpect(model().attributeExists("course"));
+                .andExpect(model().attributeExists("course"))
+                .andExpect(model().attributeExists("trainers"));
     }
 }

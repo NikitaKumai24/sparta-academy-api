@@ -5,6 +5,8 @@ import com.sparta.spartaapi.entities.Course;
 import com.sparta.spartaapi.repositories.CourseRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import com.sparta.spartaapi.entities.Trainer;
+import com.sparta.spartaapi.repositories.TrainerRepository;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -14,11 +16,15 @@ import java.util.stream.Collectors;
 @Service
 public class CourseService {
 
-    private CourseRepository courseRepository;
+
+
+    private final CourseRepository courseRepository;
+    private final TrainerRepository trainerRepository;
 
     @Autowired
-    public CourseService(CourseRepository courseRepository) {
+    public CourseService(CourseRepository courseRepository, TrainerRepository trainerRepository) {
         this.courseRepository = courseRepository;
+        this.trainerRepository = trainerRepository;
     }
 
     //CRUD Operations
@@ -42,15 +48,24 @@ public class CourseService {
     //create course
     public CourseDTO createCourse(CourseDTO courseDTO) {
         Course course = convertToEntity(courseDTO);
-        Course savedCourse = this.courseRepository.save(course);
-        return convertToDTO(savedCourse);
 
+        if (courseDTO.getTrainerId() != null) {
+            Trainer trainer = trainerRepository.findById(courseDTO.getTrainerId())
+                    .orElseThrow(() -> new NoSuchElementException("Trainer not found with id: " + courseDTO.getTrainerId()));
+            course.setTrainer(trainer);
+        } else {
+            throw new IllegalArgumentException("Trainer is required for a course");
+        }
+
+        Course savedCourse = courseRepository.save(course);
+        return convertToDTO(savedCourse);
     }
+
 
 
     //update course
     public CourseDTO updateCourse(int id, CourseDTO courseDTO) {
-        Course courseToUpdate = this.courseRepository.findById(id)
+        Course courseToUpdate = courseRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Course not found with id: " + id));
 
         courseToUpdate.setTitle(courseDTO.getTitle());
@@ -58,7 +73,13 @@ public class CourseService {
         courseToUpdate.setStartDate(courseDTO.getStartDate());
         courseToUpdate.setEndDate(courseDTO.getEndDate());
 
-        Course updatedCourse = this.courseRepository.save(courseToUpdate);
+        if (courseDTO.getTrainerId() != null) {
+            Trainer trainer = trainerRepository.findById(courseDTO.getTrainerId())
+                    .orElseThrow(() -> new NoSuchElementException("Trainer not found with id: " + courseDTO.getTrainerId()));
+            courseToUpdate.setTrainer(trainer);
+        }
+
+        Course updatedCourse = courseRepository.save(courseToUpdate);
         return convertToDTO(updatedCourse);
     }
 
