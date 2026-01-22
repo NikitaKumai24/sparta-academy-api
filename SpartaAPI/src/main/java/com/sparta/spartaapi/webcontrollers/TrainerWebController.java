@@ -7,7 +7,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 @Controller
-@RequestMapping("/api/trainers")
+@RequestMapping("/trainers")
 public class TrainerWebController {
 
     private final TrainerService trainerService;
@@ -19,30 +19,40 @@ public class TrainerWebController {
     @GetMapping
     public String listTrainers(Model model) {
         model.addAttribute("trainers", trainerService.getAllTrainers());
-        return "trainers/list";
+        return "trainers/index";
+    }
+
+    @GetMapping("/new")
+    public String addTrainerPage(Model model) {
+        model.addAttribute("trainer", new TrainerDTO());
+        return "trainers/new";
     }
 
     @GetMapping("/{id}")
     public String viewTrainer(@PathVariable Integer id, Model model) {
         model.addAttribute("trainer", trainerService.getTrainerById(id));
-        return "trainers/details";
+        return "trainers/view";
     }
 
-    @GetMapping("/new")
-    public String showCreateForm(Model model) {
-        model.addAttribute("trainer", new TrainerDTO());
-        return "trainers/form";
-    }
-
-    @PostMapping
-    public String createTrainer(@ModelAttribute("trainer") TrainerDTO trainerDTO) {
+    @PostMapping("/new")
+    public String addTrainer(@ModelAttribute TrainerDTO trainerDTO) {
         trainerService.saveTrainer(trainerDTO);
-        return "redirect:/api/trainers";
+        return "redirect:/trainers";
     }
 
-    @PostMapping("/{id}/delete")
+    @PostMapping("/{id}/update")
+    public String updateTrainer(
+            @PathVariable Integer id,
+            @ModelAttribute TrainerDTO trainerDTO) {
+
+        trainerDTO.setTrainerId(id);
+        trainerService.updateTrainer(trainerDTO);
+        return "redirect:/trainers";
+    }
+
+    @PostMapping("/{id}")
     public String deleteTrainer(@PathVariable Integer id) {
         trainerService.deleteTrainer(id);
-        return "redirect:/api/trainers";
+        return "redirect:/trainers";
     }
 }
