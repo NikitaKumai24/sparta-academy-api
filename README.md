@@ -63,3 +63,16 @@ git clone https://github.com/NikitaKumai24/sparta-academy-api.git
   - Trainees: http://localhost:8091/trainees
 
 These pages display data rendered using Thymeleaf templates.
+
+
+## Authentication (Spring Security)
+
+Most web pages require login. If you are not authenticated, you will be redirected to the default Spring Security login page:
+
+http://localhost:8080/login
+
+Seeded demo credentials:
+- admin / password123
+- trainer / password123
+- trainee / password123
+
