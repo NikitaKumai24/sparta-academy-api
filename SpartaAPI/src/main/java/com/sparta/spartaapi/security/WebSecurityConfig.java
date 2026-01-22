@@ -24,10 +24,11 @@ public class WebSecurityConfig {
         http
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/login", "/css/**", "/js/**").permitAll()
+                        .requestMatchers("/", "/courses", "/trainers", "/trainees").authenticated()
                         .anyRequest().authenticated()
                 )
                 .formLogin(form -> form
-                        .loginPage("/login")
+                        //.loginPage("/login")
                         .permitAll()
                 )
                 .logout(logout -> logout.permitAll());
