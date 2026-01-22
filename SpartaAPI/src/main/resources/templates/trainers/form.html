@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Create Trainer</title>
+</head>
+<body>
+<h1>Create Trainer</h1>
+<form th:action="@{/api/trainers}" th:object="${trainer}" method="post">
+    <label>First Name:</label>
+    <input type="text" th:field="*{firstName}" required />
+    <br/>
+    <label>Last Name:</label>
+    <input type="text" th:field="*{lastName}" required />
+    <br/>
+    <label>Specialty Language:</label>
+    <input type="text" th:field="*{specialtyLang}" />
+    <br/>
+    <button type="submit">Save</button>
+</form>
+<a th:href="@{/api/trainers}">Back</a>
+</body>
+</html>
