@@ -5,11 +5,9 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-
 @Entity
 @Table(name = "courses")
 public class Course {
-
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -28,8 +26,9 @@ public class Course {
     @Column(name = "end_date", nullable = false)
     private LocalDate endDate;
 
-    @OneToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "trainer_id", nullable = false, unique = true)
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "trainer_id", nullable = false)
     private Trainer trainer;
 
     @OneToMany(mappedBy = "course", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
@@ -97,10 +96,3 @@ public class Course {
         return trainees;
     }
 }
-
-
-
-
-
-
-

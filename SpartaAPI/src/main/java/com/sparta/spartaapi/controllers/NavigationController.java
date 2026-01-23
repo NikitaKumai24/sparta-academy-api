@@ -11,10 +11,15 @@ public class NavigationController {
         return "index";
     }
 
-    @GetMapping("/web/courses")
-    public String courses() {
-        return "courses";
+   // @GetMapping("/web/courses")
+  //  public String courses() {
+     //   return "courses";}
+
+    @GetMapping("/web/courses-page")
+    public String coursesPage() {
+        return "courses/index";
     }
+
 
     @GetMapping("/web/trainers")
     public String trainers() {
