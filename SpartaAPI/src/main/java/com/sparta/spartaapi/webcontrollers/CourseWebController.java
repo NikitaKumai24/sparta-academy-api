@@ -6,6 +6,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @Controller
 @RequestMapping("/courses")
 public class CourseWebController {
@@ -63,5 +65,14 @@ public class CourseWebController {
     public String delete(@PathVariable int id) {
         courseService.deleteCourse(id);
         return "redirect:/courses";
+    }
+
+
+    @GetMapping("/search")
+    public String searchCourses(@RequestParam("query") String query, Model model) {
+
+        List<CourseDTO> searchResults = courseService.filterByTitle_and_description(query, query);
+        model.addAttribute("courses", searchResults);
+        return "courses/index";
     }
 }

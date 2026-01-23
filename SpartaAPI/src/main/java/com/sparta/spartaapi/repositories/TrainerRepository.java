@@ -1,6 +1,7 @@
 package com.sparta.spartaapi.repositories;
 
 
+import com.sparta.spartaapi.entities.Trainee;
 import com.sparta.spartaapi.entities.Trainer;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
@@ -15,5 +16,7 @@ public interface TrainerRepository extends JpaRepository<Trainer, Integer> {
     List<Trainer> findByLastNameContainingIgnoreCase(String lastName);
 
     List<Trainer> findBySpecialtyLangContainingIgnoreCase(String specialtyLang);
+
+    List<Trainer> findByFirstNameContainingIgnoreCaseOrSpecialtyLangContainingIgnoreCase(String name, String specialty);
 }
 

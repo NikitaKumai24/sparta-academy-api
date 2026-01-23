@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.stream.Collectors;
 
 @Service
 public class TraineeService {
@@ -119,8 +120,18 @@ public class TraineeService {
         traineeRepository.deleteById(id);
     }
 
-    public List<TraineeDTO> searchByFirstName(String firstName) {
-        return traineeRepository.findByFirstNameContainingIgnoreCase(firstName).stream().map(traineeMapper::toDto).toList();
+    public List<TraineeDTO> searchByFirstName(String firstName){
+        List<Trainee> filteredTrainees = traineeRepository.findByFirstNameContainingIgnoreCase(firstName);
+        return filteredTrainees.stream()
+                .map(traineeMapper::toDto)
+                .collect(Collectors.toList());
+    }
+
+    public List<TraineeDTO> filterByName_and_specialty(String name, String specialty){
+        List<Trainee> filteredTodos = traineeRepository.findByFirstNameContainingIgnoreCaseOrSpecialtyLangContainingIgnoreCase(name, specialty);
+        return filteredTodos.stream()
+                .map(traineeMapper::toDto)
+                .collect(Collectors.toList());
     }
 
     public List<TraineeDTO> searchByLastName(String lastName) {

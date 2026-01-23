@@ -16,4 +16,6 @@ public interface CourseRepository extends JpaRepository<Course, Integer> {
     List<Course> findByTitleContainingIgnoreCase(String title);
 
     List<Course> findByStartDateAfter(LocalDate startDate);
+
+    List<Course> findByTitleContainingIgnoreCaseOrDescriptionContainingIgnoreCase(String title, String description);
 }

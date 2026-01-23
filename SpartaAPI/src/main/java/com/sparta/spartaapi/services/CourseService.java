@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.stream.Collectors;
 
 @Service
 public class CourseService {
@@ -111,6 +112,14 @@ public class CourseService {
                 .map(this::convertToDTO)
                 .toList();
     }
+
+    public List<CourseDTO> filterByTitle_and_description(String title, String description){
+        List<Course> filteredCourses = courseRepository.findByTitleContainingIgnoreCaseOrDescriptionContainingIgnoreCase(title, description);
+        return filteredCourses.stream()
+                .map(this::convertToDTO)
+                .collect(Collectors.toList());
+    }
+
 
 
     private CourseDTO convertToDTO(Course course) {

@@ -46,7 +46,7 @@ public class AppConfig {
                 // Trainers
                 var trainer1 = new Trainer(null, "Nish", "Mandal", "nish.mandal@sparta.com", "07039764801", "Java", "Tiger");
                 var trainer2 = new Trainer( null, "Cathy", "French", "cathy.french@sparta.com", "07029874632", "C#", "Panda");
-                var trainer3 = new Trainer(null, "Toby", "Peter", "toby,peter@sparta.com", "07278560101", "Python", "Dolphin");
+                var trainer3 = new Trainer(null, "Toby", "Peter", "toby.peter@sparta.com", "07278560101", "Python", "Dolphin");
                 var trainer4 = new Trainer( null, "Shawn", "Frost", "shawn.frost@sparta.com", "07034875602", "Ruby", "Whale");
 
 

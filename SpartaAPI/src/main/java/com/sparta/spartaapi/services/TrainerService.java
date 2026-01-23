@@ -1,13 +1,16 @@
 package com.sparta.spartaapi.services;
 
+import com.sparta.spartaapi.dtos.TraineeDTO;
 import com.sparta.spartaapi.dtos.TrainerDTO;
 import com.sparta.spartaapi.dtos.TrainerMapper;
+import com.sparta.spartaapi.entities.Trainee;
 import com.sparta.spartaapi.entities.Trainer;
 import com.sparta.spartaapi.repositories.TrainerRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.stream.Collectors;
 
 @Service
 public class TrainerService {
@@ -74,5 +77,12 @@ public class TrainerService {
 
     public List<TrainerDTO> searchBySpecialtyLang(String lang) {
         return trainerRepository.findBySpecialtyLangContainingIgnoreCase(lang).stream().map(trainerMapper::toDTO).toList();
+    }
+
+    public List<TrainerDTO> filterByName_and_specialty(String name, String specialty){
+        List<Trainer> filteredTrainers = trainerRepository.findByFirstNameContainingIgnoreCaseOrSpecialtyLangContainingIgnoreCase(name, specialty);
+        return filteredTrainers.stream()
+                .map(trainerMapper::toDTO)
+                .collect(Collectors.toList());
     }
 }
