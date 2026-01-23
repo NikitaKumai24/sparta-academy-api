@@ -19,7 +19,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc(addFilters = false)
 class TrainerWebControllerTest {
 
-
     @Autowired
     private MockMvc mockMvc;
 
@@ -53,4 +52,16 @@ class TrainerWebControllerTest {
                 .andExpect(view().name("trainers/view"))
                 .andExpect(model().attributeExists("trainer"));
     }
+
+
+    @Test
+    void shouldReturnNewTrainerPage() throws Exception {
+        mockMvc.perform(get("/trainers/new"))
+                .andExpect(status().isOk())
+                .andExpect(view().name("trainers/new"))
+                .andExpect(model().attributeExists("trainer"));
+    }
+
+
+
 }
