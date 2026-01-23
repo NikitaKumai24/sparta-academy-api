@@ -33,8 +33,10 @@
                       onsubmit="return confirm('Delete this course?');">
 
                     <input type="hidden"
+                           th:if="${_csrf != null}"
                            th:name="${_csrf.parameterName}"
-                           th:value="${_csrf.token}"/>
+                           th:value="${_csrf.token}" />
+
 
                     <button class="btn btn-danger">Delete</button>
                 </form>
