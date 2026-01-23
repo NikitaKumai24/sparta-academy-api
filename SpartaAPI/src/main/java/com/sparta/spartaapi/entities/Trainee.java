@@ -26,6 +26,7 @@ public class Trainee {
     @Column(name = "specialty_lang", length = 30)
     private String specialtyLang;
 
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "course_id")
     private Course course;

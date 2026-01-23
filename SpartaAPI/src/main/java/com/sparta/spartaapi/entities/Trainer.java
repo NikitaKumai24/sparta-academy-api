@@ -1,6 +1,8 @@
 package com.sparta.spartaapi.entities;
 
 import jakarta.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "trainers")
@@ -29,8 +31,9 @@ public class Trainer {
     @Column(name = "fav_animal", length = 30)
     private String favAnimal;
 
-    @OneToOne(mappedBy = "trainer", fetch = FetchType.LAZY)
-    private Course course;
+
+    @OneToMany(mappedBy = "trainer", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<Course> courses = new ArrayList<>();
 
     public Trainer() {}
 
@@ -100,11 +103,11 @@ public class Trainer {
         this.favAnimal = favAnimal;
     }
 
-    public Course getCourse() {
-        return course;
+    public List<Course> getCourses() {
+        return courses;
     }
 
-    public void setCourse(Course course) {
-        this.course = course;
+    public void setCourses(List<Course> courses) {
+        this.courses = courses;
     }
 }

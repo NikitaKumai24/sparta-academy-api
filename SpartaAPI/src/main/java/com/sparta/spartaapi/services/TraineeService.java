@@ -63,7 +63,7 @@ public class TraineeService {
     public TraineeDTO createTrainee(TraineeDTO traineeDTO) {
         Trainee trainee = traineeMapper.toEntity(traineeDTO);
 
-        // Link trainee to course if courseId is provided
+
         if (traineeDTO.getCourseId() != null) {
             Course course = courseRepository.findById(traineeDTO.getCourseId())
                     .orElseThrow(() -> new NoSuchElementException(

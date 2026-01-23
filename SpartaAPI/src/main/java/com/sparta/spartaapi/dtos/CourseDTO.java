@@ -1,22 +1,21 @@
 package com.sparta.spartaapi.dtos;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 import java.time.LocalDate;
 
 public class CourseDTO {
 
     private Integer courseId;
-
     private Integer trainerId;
-
     private String title;
-
     private String description;
 
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
     private LocalDate startDate;
 
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
     private LocalDate endDate;
-
-    // Getters && Setters
 
     public Integer getCourseId() {
         return courseId;
