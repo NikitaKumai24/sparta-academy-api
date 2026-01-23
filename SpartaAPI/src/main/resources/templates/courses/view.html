@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="UTF-8">
     <title>View Course</title>
@@ -25,12 +26,13 @@
                 <a class="btn btn-secondary" th:href="@{/courses}">Back</a>
 
                 <a class="btn btn-warning"
-                   th:href="@{/courses/{id}/edit(id=${course.courseId})}">Edit</a>
+                   th:href="@{/courses/{id}/edit(id=${course.courseId})}" sec:authorize="hasAnyRole('ADMIN', 'TRAINER')">Edit</a>
 
                 <form th:action="@{/courses/{id}/delete(id=${course.courseId})}"
                       method="post"
                       class="d-inline"
-                      onsubmit="return confirm('Delete this course?');">
+                      onsubmit="return confirm('Delete this course?');"
+                      sec:authorize="hasAnyRole('ADMIN', 'TRAINER')">
 
                     <input type="hidden"
                            th:if="${_csrf != null}"
