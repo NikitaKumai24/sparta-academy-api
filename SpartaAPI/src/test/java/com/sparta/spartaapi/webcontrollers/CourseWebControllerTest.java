@@ -78,4 +78,29 @@ class CourseWebControllerTest {
                 .andExpect(model().attributeExists("course"));
     }
 
+    @Test
+    void shouldUpdateCourseAndRedirect() throws Exception {
+        mockMvc.perform(post("/courses/1/edit")
+                        .param("title", "Updated Title")
+                        .param("description", "Updated Desc")
+                        .param("startDate", "2026-01-01")
+                        .param("endDate", "2026-02-01")
+                        .param("trainerId", "1"))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrl("/courses"));
+
+        verify(courseService).updateCourse(eq(1), any(CourseDTO.class));
+    }
+
+
+    @Test
+    void shouldDeleteCourseAndRedirect() throws Exception {
+        mockMvc.perform(post("/courses/1/delete"))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrl("/courses"));
+
+        verify(courseService).deleteCourse(1);
+    }
+
+
 }
