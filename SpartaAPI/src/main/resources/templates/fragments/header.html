@@ -1,22 +1,41 @@
-<!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org"
-      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
-<head>
-</head>
-<body>
-<nav th:fragment="navbar">
-    <div style="background-color: #333; padding: 15px;">
+<nav th:fragment="navbar" xmlns:sec="http://www.w3.org/1999/xhtml">
+    <div style="
+        background-color: #333;
+        padding: 15px;
+        display: flex;
+        align-items: center;
+    ">
+
+        <!-- Sparta Logo -->
+        <a href="/" style="margin-right: 30px;">
+            <img th:src="@{/images/sparta-logo.png}"
+                 alt="Sparta Global"
+                 style="height: 40px;" />
+        </a>
+
         <a href="/" style="color: white; margin-right: 20px; text-decoration: none;">Homepage</a>
         <a href="/courses" style="color: white; margin-right: 20px; text-decoration: none;">Courses</a>
-        <a href="/trainers" style="color: white; margin-right: 20px; text-decoration: none;" sec:authorize="hasAnyRole('ADMIN', 'TRAINEE')">Trainers</a>
-        <a href="/trainees" style="color: white; margin-right: 20px; text-decoration: none;" sec:authorize="hasAnyRole('ADMIN', 'TRAINER')">Trainees</a>
 
-        <form th:action="@{/logout}" method="post" style="display: inline;">
-            <button type="submit" style="background-color: #f44336; color: white; padding: 8px 15px; border: none; cursor: pointer;">
-                Logout
-            </button>
-        </form>
+        <a href="/trainers"
+           style="color: white; margin-right: 20px; text-decoration: none;"
+           sec:authorize="hasAnyRole('ADMIN', 'TRAINEE')">
+            Trainers
+        </a>
+
+        <a href="/trainees"
+           style="color: white; margin-right: 20px; text-decoration: none;"
+           sec:authorize="hasAnyRole('ADMIN', 'TRAINER')">
+            Trainees
+        </a>
+
+        <div style="margin-left: auto;">
+            <form th:action="@{/logout}" method="post">
+                <button type="submit"
+                        style="background-color: #f44336; color: white; padding: 8px 15px; border: none; cursor: pointer;">
+                    Logout
+                </button>
+            </form>
+        </div>
+
     </div>
 </nav>
-</body>
-</html>
