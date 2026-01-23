@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -87,12 +88,15 @@
 
         <!-- Buttons -->
         <div class="text-center">
-            <button type="submit" class="btn btn-primary me-2">
+            <button type="submit" class="btn btn-primary me-2" sec:authorize="hasRole('ADMIN')">
                 Save
             </button>
 
-            <a th:href="@{/trainees}" class="btn btn-secondary me-2">
+            <a th:href="@{/trainees}" class="btn btn-secondary me-2" sec:authorize="hasRole('ADMIN')">
                 Cancel
+            </a>
+            <a th:href="@{/trainees}" class="btn btn-secondary me-2" sec:authorize="hasAnyRole('TRAINEE', 'TRAINER')">
+                Back
             </a>
         </div>
     </form>
@@ -101,7 +105,8 @@
     <div class="text-center mt-3">
         <form th:action="@{/trainees/{id}(id=${trainee.traineeId})}"
               method="post"
-              onsubmit="return confirm('Are you sure you want to delete this trainee?')">
+              onsubmit="return confirm('Are you sure you want to delete this trainee?')"
+              sec:authorize="hasRole('ADMIN')">
             <button type="submit" class="btn btn-danger">
                 Delete
             </button>

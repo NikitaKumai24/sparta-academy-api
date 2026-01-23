@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -15,7 +16,7 @@
         <h1 class="text-center">Trainer List</h1>
         <div>
             <a href="/" class="btn btn-secondary me-2">Back</a>
-            <a href="/trainers/new" class="btn btn-primary">Add New Trainer</a>
+            <a href="/trainers/new" class="btn btn-primary" sec:authorize="hasRole('ADMIN')">Add New Trainer</a>
         </div>
     </div>
 
@@ -42,7 +43,7 @@
             <td th:text="${trainer.favAnimal}"></td>
             <td>
                 <a th:href="@{/trainers/{id}(id=${trainer.trainerId})}" class="btn btn-info btn-sm">View</a>
-                <form th:action="@{/trainers/{id}(id=${trainer.trainerId})}" method="post" style="display: inline;">
+                <form th:action="@{/trainers/{id}(id=${trainer.trainerId})}" method="post" style="display: inline;" sec:authorize="hasRole('ADMIN')">
                     <button type="submit" class="btn btn-danger btn-sm">Delete</button>
                 </form>
             </td>
