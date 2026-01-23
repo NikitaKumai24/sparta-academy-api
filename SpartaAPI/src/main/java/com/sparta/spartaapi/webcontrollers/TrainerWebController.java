@@ -1,10 +1,13 @@
 package com.sparta.spartaapi.webcontrollers;
 
+import com.sparta.spartaapi.dtos.TraineeDTO;
 import com.sparta.spartaapi.dtos.TrainerDTO;
 import com.sparta.spartaapi.services.TrainerService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @Controller
 @RequestMapping("/trainers")
@@ -54,5 +57,14 @@ public class TrainerWebController {
     public String deleteTrainer(@PathVariable Integer id) {
         trainerService.deleteTrainer(id);
         return "redirect:/trainers";
+    }
+
+
+    @GetMapping("/search")
+    public String searchTrainers(@RequestParam("query") String query, Model model) {
+
+        List<TrainerDTO> searchResults = trainerService.filterByName_and_specialty(query, query);
+        model.addAttribute("trainers", searchResults);
+        return "trainers/index";
     }
 }

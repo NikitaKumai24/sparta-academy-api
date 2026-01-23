@@ -8,6 +8,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @Controller
 @RequestMapping("/trainees")
 public class TraineeWebController {
@@ -55,5 +57,13 @@ public class TraineeWebController {
     public String deleteTrainee(@PathVariable Integer id) {
         traineeService.deleteTrainee(id);
         return "redirect:/trainees";
+    }
+
+    @GetMapping("/search")
+    public String searchTrainees(@RequestParam("query") String query, Model model) {
+
+        List<TraineeDTO> searchResults = traineeService.filterByName_and_specialty(query, query);
+        model.addAttribute("trainees", searchResults);
+        return "trainees/index";
     }
 }

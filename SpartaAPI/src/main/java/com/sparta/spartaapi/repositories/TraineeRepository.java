@@ -16,4 +16,6 @@ public interface TraineeRepository extends JpaRepository<Trainee, Integer> {
     List<Trainee> findBySpecialtyLangContainingIgnoreCase(String specialtyLang);
 
     List<Trainee> findByCourse_CourseId(Integer courseId);
+
+    List<Trainee> findByFirstNameContainingIgnoreCaseOrSpecialtyLangContainingIgnoreCase(String name, String specialty);
 }
